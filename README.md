@@ -18,4 +18,8 @@ chmod +x alert.py
 crontab -e
 
 */5 * * * * cd ~/mrestart && ./m.sh
+
+chmod +x id.py
+
+python3 id.py
 ```
