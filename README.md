@@ -17,5 +17,5 @@ chmod +x alert.py
 
 crontab -e
 
-*/5 * * * * cd ~/mrestart && ./m1.sh
+*/5 * * * * cd ~/mrestart && ./m.sh
 ```
