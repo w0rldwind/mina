@@ -2,7 +2,7 @@
 ```
 apt update
 apt install python3-pip
-pip install pyTelegramBotAPI
+pip3 install pyTelegramBotAPI
 ```
 ```
 cd
