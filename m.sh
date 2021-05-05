@@ -6,7 +6,7 @@ nodeName=Mina
 #Настройка api
 graphqlApi=http://localhost:3085/graphql
 #Время на загрузку ноды (мин)
-loadMin=20
+loadMin=25
 #Команда перезагрузки
 restartCmd='docker restart mina'
 #Команды после перезапуска (on/off)
