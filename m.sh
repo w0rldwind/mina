@@ -11,9 +11,9 @@ loadMin=25
 restartCmd='docker restart mina'
 #Команды после перезапуска (on/off)
 directions=off
-cmd[1]='docker exec -it mina2 mina client set-snark-work-fee 0'
+cmd[1]='docker exec -it mina mina client set-snark-work-fee 0'
 #Перезапускать ноду, если до блока осталось меньше часа?(on/off)
-hrestart=on
+hrestart=off
 
 function start() {
 	data=$(curl -d '{"query": "{daemonStatus{blockchainLength,highestUnvalidatedBlockLengthReceived,uptimeSecs,peers,syncStatus,nextBlockProduction{times{startTime}}}}"}' -H 'Content-Type: application/json' $graphqlApi)
