@@ -99,7 +99,7 @@ function checkStatus() {
 				fi
 			fi
 		else
-			echo Нода отстала. Когда блок?
+			echo $(date +'%d.%m.%Y %H:%M:%S') Нода отстала. Когда блок? >> ~/mrestart/${nodeName}.log
 			if [ "$uptimeSecs" -gt "$loadSec" ]; then
 				if [ "$timeToBlock" = 'Не в этой эпохе' ]; then
 					echo $(date +'%d.%m.%Y %H:%M:%S') Блок не в этой эпохе. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
