@@ -17,9 +17,9 @@ hrestart=off
 
 function start() {
 	data=$(curl -d '{"query": "{daemonStatus{blockchainLength,highestUnvalidatedBlockLengthReceived,uptimeSecs,peers,syncStatus,nextBlockProduction{times{startTime}}}}"}' -H 'Content-Type: application/json' $graphqlApi)
-	checkconn=$(echo $data | grep -o "data")
+	checkConn=$(echo $data | grep -o "data")
 
-	if [ "$checkconn" = 'data' ]; then
+	if [ "$checkConn" = 'data' ]; then
 		blockHeight=$(echo $data | jq . | grep -oP '(?<="blockchainLength": )[^,]*')
 		unvalidatedBlockHeight=$(echo $data | jq . | grep -oP '(?<="highestUnvalidatedBlockLengthReceived": )[^,]*')
 		uptimeSecs=$(echo $data | jq . | grep -oP '(?<="uptimeSecs": )[^,]*')
