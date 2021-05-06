@@ -6,7 +6,7 @@ nodeName=Mina
 #Настройка api
 graphqlApi=http://localhost:3085/graphql
 #Время на загрузку ноды (мин)
-loadMin=25
+loadMin=30
 #Команда перезагрузки
 restartCmd='docker restart mina'
 #Команды после перезапуска (on/off)
@@ -101,7 +101,7 @@ function checkStatus() {
 		else
 			echo $(date +'%d.%m.%Y %H:%M:%S') Нода отстала. Когда блок? >> ~/mrestart/${nodeName}.log
 			if [ "$uptimeSecs" -gt "$loadSec" ]; then
-				if [ "$timeToBlock" = 'Не в этой эпохе' ]; then
+				if [ "$timeToBlock" = 'не в этой эпохе' ]; then
 					echo $(date +'%d.%m.%Y %H:%M:%S') Блок не в этой эпохе. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
 					canBeRestarted
 				else
