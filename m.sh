@@ -86,15 +86,15 @@ function checkStatus() {
 			if [ "$uptimeSecs" -lt "$loadSec" ]; then
 				echo $(date +'%d.%m.%Y %H:%M:%S') Нода синхронизирована. Работает менее $loadMin мин. Оповещение >> ~/mrestart/${nodeName}.log
 				info
-				echo $(date +'%d.%m.%Y %H:%M:%S') Дополнительные команды >> ~/mrestart/${nodeName}.log
 				if [ "$directions" = 'on' ]; then
+					echo $(date +'%d.%m.%Y %H:%M:%S') Дополнительные команды >> ~/mrestart/${nodeName}.log
 					cmdq=$(echo ${#cmd[@]})
 
 					#Цикл выполнения команд
 					for ((i=1; i<=cmdq; i++)); do
 					#Номер команды
 					let "n=0+$i"
-					eval ${cmd[$n]} >> ~/mrestart/${nodeName}.log
+					${cmd[$n]} >> ~/mrestart/${nodeName}.log
 					done
 				fi
 			fi
