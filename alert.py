@@ -27,4 +27,4 @@ if sys.argv[1] == 'succeeded':
 	elif sys.argv[2] == 'cantBeRestarted':
 		msg = bot.send_message(tgid, 'Нода: ' + sys.argv[3] + '\nВысота блока ноды: ' + sys.argv[4] + '\nВысота блока сети: ' + sys.argv[5] + '\nАптайм: ' + sys.argv[6] + '\nПиры: ' + sys.argv[7] + '\nСтатус: ' + sys.argv[8] + '\nСледующий блок: ' + sys.argv[9] + '\nДо блока менее 1ч, перезагрузка запрещена. Проверь ноду!')
 else:
-	msg = bot.send_message(tgid, 'Нет соединения с нодой ' + sys.argv[3] + '. Возможно нода перезагружается.')
+	msg = bot.send_message(tgid, 'Нет соединения с нодой ' + sys.argv[2] + '. Возможно нода перезагружается.')
