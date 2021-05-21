@@ -34,7 +34,7 @@ function start() {
 		nextBlock
 	else
 		echo $(date +'%d.%m.%Y %H:%M:%S') Ошибка соединения >> ~/mrestart/${nodeName}.log
-		python3 alert.py error
+		python3 alert.py error "${nodeName}"
 	fi
 }
 
