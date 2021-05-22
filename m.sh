@@ -12,7 +12,7 @@ restartCmd='docker restart mina'
 #Команды после перезапуска (on/off)
 directions=off
 cmd[1]='docker exec -t mina mina client set-snark-work-fee 0'
-#Перезапускать ноду, если до блока осталось меньше часа?(on/off)
+#Перезапускать ноду, если до блока осталось менее часа?(on/off)
 hrestart=off
 
 function start() {
