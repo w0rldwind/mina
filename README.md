@@ -1,5 +1,7 @@
 # mina restarter
 
+**translation in progress, DO NOT use**
+
 Перезагрузка ноды:
 * при отставании
 * при статусах CONNECTING, LISTENING, OFFLINE, BOOTSTRAP, CATCHUP (если нода работает дольше отведенного на загрузку времени, настройка в файле m.sh)
