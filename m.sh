@@ -1,18 +1,18 @@
 #!/bin/bash
 
-#Настройки
-#Имя ноды (например Mina1)
-nodeName=Mina
-#Настройка api
+#Settings
+#Node Name (e.g. Mina1)
+nodeName=Mina1
+#Custom API (if required)
 graphqlApi=http://localhost:3085/graphql
-#Время на загрузку ноды (мин)
+#Time to load a node (min)
 loadMin=30
-#Команда перезагрузки
-restartCmd='docker restart mina'
-#Команды после перезапуска (on/off)
+#Reboot Command (edit for docker)
+restartCmd='systemctl --user restart mina'
+#Commands after restart (on/off)
 directions=off
-cmd[1]='docker exec -t mina mina client set-snark-work-fee 0'
-#Перезапускать ноду, если до блока осталось менее часа?(on/off)
+cmd[1]='mina client set-snark-work-fee 0.000005'
+#Restart the node if less than an hour is left before the block? (on/off)
 hrestart=off
 
 function start() {
@@ -28,12 +28,12 @@ function start() {
 		nextBlockTime=$(echo $data | jq '.data.daemonStatus.nextBlockProduction' | grep -oP '(?<="startTime": ")[^"]*')
 
 		currentTime=$(date +%s)
-		uptime=$(eval "echo $(date -ud "@$uptimeSecs" +'$((%s/3600/24))д %H:%M:%S')")
+		uptime=$(eval "echo $(date -ud "@$uptimeSecs" +'$((%s/3600/24))d %H:%M:%S')")
 		let "stuck=(unvalidatedBlockHeight-1)"
 		let "loadSec=(loadMin*60)"
 		nextBlock
 	else
-		echo $(date +'%d.%m.%Y %H:%M:%S') Ошибка соединения >> ~/mrestart/${nodeName}.log
+		echo $(date +'%d.%m.%Y %H:%M:%S') Connection Error >> ~/mrestart/${nodeName}.log
 		python3 alert.py error "${nodeName}"
 	fi
 }
@@ -41,26 +41,26 @@ function start() {
 function nextBlock() {
 	if [ -z "$nextBlockTime" ]; then
 		if [ "$syncStatus" = 'BOOTSTRAP' ]; then
-			timeToBlock='загрузка'
+			timeToBlock='loading'
 			height
 		else
-			timeToBlock='не в этой эпохе'
+			timeToBlock='None this epoch'
 			echo $timeToBlock
 			height
 		fi
 	else
 		let "secsToBlock=(nextBlockTime/1000-currentTime)"
-		timeToBlock=$(eval "echo $(date -ud "@$secsToBlock" +'$((%s/3600/24))д %H:%M:%S')")
+		timeToBlock=$(eval "echo $(date -ud "@$secsToBlock" +'$((%s/3600/24))d %H:%M:%S')")
 		height
 	fi
 }
 
 function height() {
 	if [ "$blockHeight" = 'null' ]; then
-		blockHeight='загрузка'
+		blockHeight='loading'
 	fi
 	if [ "$unvalidatedBlockHeight" -eq '0' ]; then
-		unvalidatedBlockHeight='загрузка'
+		unvalidatedBlockHeight='loading'
 	fi
 	checkStatus
 }
@@ -80,55 +80,55 @@ function cantBeRestarted() {
 
 function checkStatus() {
 	if [ "$syncStatus" = 'SYNCED' ]; then
-		#Если нода не отстает
+		#If the node is not lagging behind
 		if [ "$blockHeight" -ge "$stuck" ]; then
-			#Всё хорошо
+			#Things are good
 			if [ "$uptimeSecs" -lt "$loadSec" ]; then
-				echo $(date +'%d.%m.%Y %H:%M:%S') Нода синхронизирована. Работает менее $loadMin мин. Оповещение >> ~/mrestart/${nodeName}.log
+				echo $(date +'%d.%m.%Y %H:%M:%S') Node is synced. Работает менее $loadMin min. Alert >> ~/mrestart/${nodeName}.log
 				info
 				if [ "$directions" = 'on' ]; then
-					echo $(date +'%d.%m.%Y %H:%M:%S') Дополнительные команды >> ~/mrestart/${nodeName}.log
+					echo $(date +'%d.%m.%Y %H:%M:%S') Additional commands >> ~/mrestart/${nodeName}.log
 					cmdq=$(echo ${#cmd[@]})
 
-					#Цикл выполнения команд
+					#Cycle of command execution
 					for ((i=1; i<=cmdq; i++)); do
-					#Номер команды
+					#Command number
 					let "n=0+$i"
 					${cmd[$n]} >> ~/mrestart/${nodeName}.log
 					done
 				fi
 			fi
 		else
-			echo $(date +'%d.%m.%Y %H:%M:%S') Нода отстала. Когда блок? >> ~/mrestart/${nodeName}.log
+			echo $(date +'%d.%m.%Y %H:%M:%S') Node fall behind. When is the block? >> ~/mrestart/${nodeName}.log
 			if [ "$uptimeSecs" -gt "$loadSec" ]; then
-				if [ "$timeToBlock" = 'не в этой эпохе' ]; then
-					echo $(date +'%d.%m.%Y %H:%M:%S') Блок не в этой эпохе. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
+				if [ "$timeToBlock" = 'none in this epoch' ]; then
+					echo $(date +'%d.%m.%Y %H:%M:%S') Block not ín this epoch. Notify and restart >> ~/mrestart/${nodeName}.log
 					canBeRestarted
 				else
 					if [ "$secsToBlock" -gt '3600' ]; then
-						echo $(date +'%d.%m.%Y %H:%M:%S') Блок в этой эпохе. До блока более часа. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
+						echo $(date +'%d.%m.%Y %H:%M:%S') Block ín this epoch. More than an hour to the block. Notify and restart >> ~/mrestart/${nodeName}.log
 						canBeRestarted
 					else
 						if [ "$1hrestart" = 'on' ]; then
-							echo $(date +'%d.%m.%Y %H:%M:%S') Блок в этой эпохе. До блока менее часа. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
+							echo $(date +'%d.%m.%Y %H:%M:%S') Block ín this epoch. Less than an hour to the block. Notify and restart >> ~/mrestart/${nodeName}.log
 							canBeRestarted
 						else
-							echo $(date +'%d.%m.%Y %H:%M:%S') Блок в этой эпохе. До блока менее часа. Оповещение >> ~/mrestart/${nodeName}.log
+							echo $(date +'%d.%m.%Y %H:%M:%S') Block ín this epoch. Less than an hour to the block. Alert >> ~/mrestart/${nodeName}.log
 							cantBeRestarted
 						fi
 					fi
 				fi
 			else
-				echo $(date +'%d.%m.%Y %H:%M:%S') Нода синхронизирована. Работает менее $loadMin мин. Отстает по блокам. Оповещение >> ~/mrestart/${nodeName}.log
+				echo $(date +'%d.%m.%Y %H:%M:%S') The node is synced. Работает менее $loadMin min. Lags behind. Alert >> ~/mrestart/${nodeName}.log
 				info
 			fi
 		fi
 	else
 		if [ "$uptimeSecs" -gt "$loadSec" ]; then
-			echo $(date +'%d.%m.%Y %H:%M:%S') Нода не синхронизирована. Работает более $loadMin мин. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
+			echo $(date +'%d.%m.%Y %H:%M:%S') Node is not synced. Работает более $loadMin min. Notify and restart >> ~/mrestart/${nodeName}.log
 			canBeRestarted
 		else
-			echo $(date +'%d.%m.%Y %H:%M:%S') Нода не синхронизирована. Работает менее $loadMin мин. Оповещение >> ~/mrestart/${nodeName}.log
+			echo $(date +'%d.%m.%Y %H:%M:%S') Node is not synced. Работает менее $loadMin min. Alert >> ~/mrestart/${nodeName}.log
 			info
 		fi
 	fi
