@@ -41,10 +41,10 @@ function start() {
 function nextBlock() {
 	if [ -z "$nextBlockTime" ]; then
 		if [ "$syncStatus" = 'BOOTSTRAP' ]; then
-			timeToBlock='loading'
+			timeToBlock='Syncing'
 			height
 		else
-			timeToBlock='None this epoch'
+			timeToBlock='None in this epoch'
 			echo $timeToBlock
 			height
 		fi
@@ -57,10 +57,10 @@ function nextBlock() {
 
 function height() {
 	if [ "$blockHeight" = 'null' ]; then
-		blockHeight='loading'
+		blockHeight='Syncing'
 	fi
 	if [ "$unvalidatedBlockHeight" -eq '0' ]; then
-		unvalidatedBlockHeight='loading'
+		unvalidatedBlockHeight='Syncing'
 	fi
 	checkStatus
 }
@@ -99,9 +99,9 @@ function checkStatus() {
 				fi
 			fi
 		else
-			echo $(date +'%d.%m.%Y %H:%M:%S') Node fall behind. When is the block? >> ~/mrestart/${nodeName}.log
+			echo $(date +'%d.%m.%Y %H:%M:%S') Node falling behind. When is the block? >> ~/mrestart/${nodeName}.log
 			if [ "$uptimeSecs" -gt "$loadSec" ]; then
-				if [ "$timeToBlock" = 'none in this epoch' ]; then
+				if [ "$timeToBlock" = 'None in this epoch' ]; then
 					echo $(date +'%d.%m.%Y %H:%M:%S') Block not ín this epoch. Notify and restart >> ~/mrestart/${nodeName}.log
 					canBeRestarted
 				else
