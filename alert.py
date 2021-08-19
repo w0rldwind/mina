@@ -25,6 +25,6 @@ if sys.argv[1] == 'succeeded':
 	elif sys.argv[2] == 'canBeRestarted':
 		msg = bot.send_message(tgid, 'Node: ' + sys.argv[3] + '\nNode Block Height: ' + sys.argv[4] + '\nNetwork Block Height: ' + sys.argv[5] + '\nUptime: ' + sys.argv[6] + '\nPeers: ' + sys.argv[7] + '\nStatus: ' + sys.argv[8] + '\nNext Block: ' + sys.argv[9] + '\nRestart in progress...')
 	elif sys.argv[2] == 'cantBeRestarted':
-		msg = bot.send_message(tgid, 'Node: ' + sys.argv[3] + '\nNode Block Height: ' + sys.argv[4] + '\nNetwork Block Height: ' + sys.argv[5] + '\nUptime: ' + sys.argv[6] + '\nPeers: ' + sys.argv[7] + '\nStatus: ' + sys.argv[8] + '\nNext Block: ' + sys.argv[9] + '\nLess than 1hr to the block, Restart is retricted. Check Node!')
+		msg = bot.send_message(tgid, 'Node: ' + sys.argv[3] + '\nNode Block Height: ' + sys.argv[4] + '\nNetwork Block Height: ' + sys.argv[5] + '\nUptime: ' + sys.argv[6] + '\nPeers: ' + sys.argv[7] + '\nStatus: ' + sys.argv[8] + '\nNext Block: ' + sys.argv[9] + '\nLess than 1hr to the block, Restart is restricted. Check Node!')
 else:
-	msg = bot.send_message(tgid, 'No connection to the node ' + sys.argv[2] + '. Probably node is restarting.')
+	msg = bot.send_message(tgid, 'No connection to the node ' + sys.argv[2] + '. Node is probably restarting.')
