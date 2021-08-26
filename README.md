@@ -1,10 +1,10 @@
 # mina restarter
 
-**translation in progress, DO NOT use**
+**This is basically a translation of [w0rldwind's script](https://github.com/w0rldwind/mina).** Code unchanged, only translated in English.
 
-Перезагрузка ноды:
-* при отставании
-* при статусах CONNECTING, LISTENING, OFFLINE, BOOTSTRAP, CATCHUP (если нода работает дольше отведенного на загрузку времени, настройка в файле m.sh)
+Mina will restart when:
+* Node block height is lagging behing, or
+* Node stutus is CONNECTING, LISTENING, OFFLINE, BOOTSTRAP, CATCHUP (Set the appropriate time required to load a node in `m.sh`)
 
 
 Download scripts
@@ -32,7 +32,7 @@ apt install jq
 
 1. Register a bot with [@BotFather](https://t.me/BotFather)
 2. Add bot token to `alert.py` and `id.py`
-3. Run `python3 id.py` and write "**ID**" to your bot. Add the received **ID** to alert.py (`tgid`)
+3. Run `python3 id.py` and write "**ID**" to your bot. Add the received **ID** to alert.py (`tgid`) _If you are setting up alert for multiple nodes but want the alerts in the same chat then you only need to run this command once on the first node you configure_.
 4. Setup a scheduler
    - Insert the below line in `crontab -e`
 ```
@@ -46,6 +46,6 @@ Settings in file- m.sh
 * Edit Node name as you prefer
 * Customize api (if required)
 * Edit the "time" required to load a node
-* Add reboot and additional commands
+* Add restart and additional commands
 
 Thanks to [w0rldwind](https://github.com/w0rldwind) for the original scripts!
