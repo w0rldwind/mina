@@ -125,10 +125,10 @@ function checkStatus() {
 		fi
 	else
 		if [ "$uptimeSecs" -gt "$loadSec" ]; then
-			echo $(date +'%d.%m.%Y %H:%M:%S') Node is not synced. Работает более $loadMin min. Notify and restart >> ~/mrestart/${nodeName}.log
+			echo $(date +'%d.%m.%Y %H:%M:%S') Node is not synced. Uptime more than $loadMin min. Notify and restart >> ~/mrestart/${nodeName}.log
 			canBeRestarted
 		else
-			echo $(date +'%d.%m.%Y %H:%M:%S') Node is not synced. Работает менее $loadMin min. Alert >> ~/mrestart/${nodeName}.log
+			echo $(date +'%d.%m.%Y %H:%M:%S') Node is not synced. Uptime less than $loadMin min. Alert >> ~/mrestart/${nodeName}.log
 			info
 		fi
 	fi
