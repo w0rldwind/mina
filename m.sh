@@ -109,7 +109,7 @@ function checkStatus() {
 						echo $(date +'%d.%m.%Y %H:%M:%S') Блок в этой эпохе. До блока более часа. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
 						canBeRestarted
 					else
-						if [ "$1hrestart" = 'on' ]; then
+						if [ "$hrestart" = 'on' ]; then
 							echo $(date +'%d.%m.%Y %H:%M:%S') Блок в этой эпохе. До блока менее часа. Оповещение и перезагрузка >> ~/mrestart/${nodeName}.log
 							canBeRestarted
 						else
